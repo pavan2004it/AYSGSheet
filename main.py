@@ -9,10 +9,6 @@ from google.oauth2.service_account import Credentials
 
 load_dotenv('.env')
 
-scopes = [
-    'https://www.googleapis.com/auth/spreadsheets',
-    'https://www.googleapis.com/auth/drive'
-]
 
 REDIRECT_URI = os.environ['REDIRECT_URI']
 OKTA_CLIENT_ID = os.environ['OKTA_CLIENT_ID']
@@ -98,12 +94,7 @@ def user_attendance():
         submit_button = st.form_submit_button("Submit Attendance")
     if submit_button:
         if name and email:  # Check if name and email are not empty
-            credentials = Credentials.from_service_account_file(
-                'creds.json',
-                scopes=scopes
-            )
-
-            gc = gspread.authorize(credentials)
+            gc = gspread.service_account_from_dict(dict(st.secrets["gsheets"]["service_account"]))
             sheet = gc.open('ays').sheet1
             sheet.append_row([name, email, today])
             st.success("Attendance recorded successfully!")

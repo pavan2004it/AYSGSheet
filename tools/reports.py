@@ -11,12 +11,8 @@ def reports():
     st.title("Attendance Reports")
 
     # Fetch all data from the Google Sheet
-    credentials = Credentials.from_service_account_file(
-        'creds.json',
-        scopes=scopes
-    )
 
-    gc = gspread.authorize(credentials)
+    gc = gspread.service_account_from_dict(dict(st.secrets["gsheets"]["service_account"]))
     sheet = gc.open('ays').sheet1
     # gc, authorized_user = gspread.oauth_from_dict(credentials)
     # sheet = gc.open('ays').sheet1
