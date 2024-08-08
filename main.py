@@ -5,7 +5,6 @@ from authlib.integrations.base_client.errors import OAuthError
 from authlib.integrations.requests_client import OAuth2Session
 from dotenv import load_dotenv
 import gspread
-from google.oauth2.service_account import Credentials
 
 load_dotenv('.env')
 
