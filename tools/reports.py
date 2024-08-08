@@ -2,12 +2,12 @@ import pandas as pd
 import streamlit as st
 import plotly.express as px
 import gspread
-from google.oauth2.service_account import Credentials
+from main import add_bg_gradient
 # Set up Google Sheets credentials
-scopes = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 
 
 def reports():
+    add_bg_gradient()
     st.title("Attendance Reports")
 
     # Fetch all data from the Google Sheet
