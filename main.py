@@ -41,17 +41,19 @@ def load_css():
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+
 def add_bg_gradient():
-  st.markdown(
-       f"""
-       <style>
-       .stApp {{
-           background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-       }}
-       </style>
-       """,
-       unsafe_allow_html=True
-   )
+    st.markdown(
+        f"""
+           <style>
+           .stApp {{
+               background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+           }}
+           </style>
+           """,
+        unsafe_allow_html=True
+    )
+    st.query_params.clear()
 
 
 def list_emails() -> list:
@@ -128,7 +130,7 @@ def user_attendance():
 
 
 def registration():
-    # add_bg_gradient()
+    add_bg_gradient()
     st.title("User Registration")
     with st.form("registration_form", clear_on_submit=True):
         name = st.text_input("Enter your name")

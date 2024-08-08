@@ -49,10 +49,10 @@ def reports():
                      title='Distribution of Attendance')
     st.plotly_chart(fig_pie)
 
-    # Recent attendance records
-    st.subheader("Recent Attendance Records")
-    recent_records = df.sort_values('Date', ascending=False).head(10)
-    st.table(recent_records)
+    # # Recent attendance records
+    # st.subheader("Recent Attendance Records")
+    # recent_records = df.sort_values('Date', ascending=False).head(10)
+    # st.table(recent_records)
 
     # Download full report
     csv = df.to_csv(index=False)
