@@ -1,3 +1,4 @@
+import datetime
 import os
 from datetime import date
 import streamlit as st
@@ -45,7 +46,7 @@ def add_bg_gradient():
        f"""
        <style>
        .stApp {{
-           background: linear-gradient(135deg, #43c6ac 0%, #191654 100%);
+           background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
        }}
        </style>
        """,
@@ -109,37 +110,38 @@ def user_attendance():
     st.title("User Attendance")
     with st.form("attendance_form", clear_on_submit=True):
         options = list_emails()
-        name = st.text_input("Name")
         email = st.selectbox("Select Email", options)
-        today = st.date_input("Select Date", value=None)
-        present_date = date.today().strftime("%Y-%m-%d")
-        st.text(f"Date: {present_date}")
+        present_date = date.today()
+        today = st.date_input("Select Date", present_date)
         submit_button = st.form_submit_button("Submit Attendance")
     if submit_button:
-        if name and email:  # Check if name and email are not empty
+        if email:  # Check if name and email are not empty
             gc = gspread.service_account_from_dict(dict(st.secrets["gsheets"]["service_account"]))
             sheet = gc.open('ays').sheet1
-            sheet.append_row([name, email, today])
+            last_row = len(sheet.get_all_values())
+            sheet.update_cell(last_row + 1, 2, email)
+            sheet.update_cell(last_row + 1, 3, str(today))
+            # sheet.append_row([email, str(today)])
             st.success("Attendance recorded successfully!")
         else:
             st.error("Please enter both name and email.")
 
 
 def registration():
-    add_bg_gradient()
+    # add_bg_gradient()
     st.title("User Registration")
     with st.form("registration_form", clear_on_submit=True):
         name = st.text_input("Enter your name")
         email = st.text_input("Enter your email")
-        today = st.date_input("Select Date", value=None)
-        present_date = date.today().strftime("%Y-%m-%d")
-        st.text(f"Date: {present_date}")
+        phone = st.text_input("Enter your phone number")
+        present_date = date.today()
+        today = st.date_input("Select Date", present_date)
         submit_button = st.form_submit_button("Submit Registration")
     if submit_button:
         if name and email:  # Check if name and email are not empty
-            create_attendance_table()
-            c.execute("INSERT INTO attendance VALUES (?, ?, ?)", (name, email, today))
-            conn.commit()
+            gc = gspread.service_account_from_dict(dict(st.secrets["gsheets"]["service_account"]))
+            sheet = gc.open('ays').sheet1
+            sheet.append_row([name, email, str(today), phone])
             st.success(f"Registration was successful {name}")
         else:
             st.error("Please enter both name and email.")
